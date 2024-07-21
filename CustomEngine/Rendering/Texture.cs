@@ -1,4 +1,4 @@
-namespace CustomEngine.Core.Rendering;
+namespace CustomEngine.Rendering;
 
 public class Texture
 {

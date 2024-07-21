@@ -3,7 +3,7 @@ using Silk.NET.GLFW;
 using Silk.NET.Input;
 using Silk.NET.Windowing;
 
-namespace CustomEngine.Core.Game;
+namespace CustomEngine.Game;
 
 public class GameLoop(IWindow window)
 {

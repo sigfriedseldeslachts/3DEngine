@@ -1,11 +1,11 @@
 using System.Numerics;
-using CustomEngine.Core.Game;
-using CustomEngine.Core.Rendering;
-using CustomEngine.Core.Rendering.Shaders;
+using CustomEngine.Game;
+using CustomEngine.Rendering.Primitives;
+using CustomEngine.Rendering.Shaders;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
-using Shader = CustomEngine.Core.Rendering.Shader;
+using Shader = CustomEngine.Rendering.Shaders.Shader;
 
 namespace CustomEngine.Rendering;
 
@@ -15,7 +15,7 @@ public class RenderLoop(IWindow window, GameLoop gameLoop)
     private readonly List<IDrawable> _drawables = [];
     private Shader _shader;
 
-    public unsafe void OnLoad()
+    public void OnLoad()
     {
         _gl = GL.GetApi(window);
         _gl.Enable(GLEnum.DepthTest);
@@ -29,7 +29,7 @@ public class RenderLoop(IWindow window, GameLoop gameLoop)
         AddDrawable(model);
     }
 
-    public unsafe void OnRender(double obj)
+    public void OnRender(double obj)
     {
         //Clear the color channel.
         _gl.Clear((uint) ClearBufferMask.ColorBufferBit | (uint) ClearBufferMask.DepthBufferBit);

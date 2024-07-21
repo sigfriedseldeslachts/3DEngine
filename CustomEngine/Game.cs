@@ -1,8 +1,6 @@
-﻿using CustomEngine.Core.Game;
-using CustomEngine.Core.Rendering;
+﻿using CustomEngine.Game;
 using CustomEngine.Rendering;
 using Silk.NET.Maths;
-using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 
 class Game

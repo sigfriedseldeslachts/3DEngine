@@ -1,8 +1,7 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
-using Silk.NET.Maths;
 
-namespace CustomEngine.Core.Rendering.Primitives;
+namespace CustomEngine.Rendering.Primitives;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct Vertex

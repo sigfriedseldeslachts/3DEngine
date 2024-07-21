@@ -1,10 +1,9 @@
 using System.Numerics;
-using CustomEngine.Core.Rendering.Primitives;
 using SharpGLTF.Schema2;
 using Silk.NET.OpenGL;
-using Mesh = CustomEngine.Core.Rendering.Primitives.Mesh;
+using Shader = CustomEngine.Rendering.Shaders.Shader;
 
-namespace CustomEngine.Core.Rendering;
+namespace CustomEngine.Rendering.Primitives;
 
 public class Model : IDrawable
 {

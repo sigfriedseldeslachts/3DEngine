@@ -1,4 +1,6 @@
-namespace CustomEngine.Core.Rendering;
+using CustomEngine.Rendering.Shaders;
+
+namespace CustomEngine.Rendering.Primitives;
 
 public interface IDrawable
 {

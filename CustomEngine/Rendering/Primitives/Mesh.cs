@@ -1,7 +1,7 @@
-using System.Numerics;
 using Silk.NET.OpenGL;
+using Shader = CustomEngine.Rendering.Shaders.Shader;
 
-namespace CustomEngine.Core.Rendering.Primitives;
+namespace CustomEngine.Rendering.Primitives;
 
 public class Mesh(Vertex[] vertices, uint[] indices, GL gl) : IDrawable
 {

@@ -2,7 +2,7 @@ using System.Numerics;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 
-namespace CustomEngine.Core.Rendering;
+namespace CustomEngine.Rendering.Shaders;
 
 public abstract class Shader
 {
