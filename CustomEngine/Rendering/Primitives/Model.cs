@@ -1,6 +1,7 @@
 using System.Numerics;
 using SharpGLTF.Schema2;
 using Silk.NET.OpenGL;
+using StbImageSharp;
 using Shader = CustomEngine.Rendering.Shaders.Shader;
 
 namespace CustomEngine.Rendering.Primitives;
@@ -9,6 +10,7 @@ public class Model : IDrawable
 {
     private readonly List<Mesh> _meshes = [];
     private readonly GL _gl;
+    private uint _textureId;
     
     public Model(string path, GL gl)
     {
@@ -19,7 +21,8 @@ public class Model : IDrawable
     private void LoadModal(string path)
     {
         var model = ModelRoot.Load(path);
-        
+
+        ProcessMaterials(model.LogicalMaterials);
         ProcessNodes(model.DefaultScene.VisualChildren);
     }
 
@@ -91,6 +94,47 @@ public class Model : IDrawable
         }
         
         return new Mesh(vertices.ToArray(), indices.ToArray(), _gl);
+    }
+
+    private unsafe void ProcessMaterials(IReadOnlyList<Material> materials)
+    {
+        if (materials.Count == 0) return;
+
+        // First without for loop to test
+        var material = materials[0];
+
+        // Get the base channel
+        var baseColor = material.FindChannel("BaseColor");
+        if (baseColor == null) return; // IMPORTANT: WHEN ADDING IN A LOOP, DON'T FORGET TO CHANGE THIS!!!!
+        var materialChannel = baseColor.Value;
+
+        var image = materialChannel.Texture.PrimaryImage.Content;
+        
+        // Start a timer
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        
+        // Load the image from a file
+        var result = ImageResult.FromMemory(image.Content.ToArray(), ColorComponents.RedGreenBlueAlpha);
+        
+        // Stop the timer
+        watch.Stop();
+        Console.WriteLine($"Time to load texture: {watch.ElapsedMilliseconds}ms");
+        
+        // Generate a texture
+        _textureId = _gl.GenTexture();
+        _gl.BindTexture(GLEnum.Texture2D, _textureId);
+        fixed (byte* ptr = result.Data)
+        {
+            _gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba, (uint) result.Width, (uint) result.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, ptr);
+        }
+        
+        _gl.TextureParameter(_textureId, TextureParameterName.TextureWrapS, (int) GLEnum.Repeat);
+        _gl.TextureParameter(_textureId, TextureParameterName.TextureWrapT, (int) GLEnum.Repeat);
+        
+        _gl.TextureParameter(_textureId, TextureParameterName.TextureMinFilter, (int) GLEnum.Linear);
+        _gl.TextureParameter(_textureId, TextureParameterName.TextureMagFilter, (int) GLEnum.Linear);
+        _gl.GenerateMipmap(TextureTarget.Texture2D);
+        _gl.BindTexture(TextureTarget.Texture2D, 0);
     }
 
     public void Draw(Shader shader)

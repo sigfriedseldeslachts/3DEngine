@@ -8,8 +8,7 @@ public class Mesh(Vertex[] vertices, uint[] indices, GL gl) : IDrawable
     private GL _gl = gl;
     private bool _hasIndices = indices.Length > 0;
     private uint _vao, _vbo, _ebo;
-    
-    
+    private List<Texture> _textures = [];
 
     public unsafe void SetupMesh()
     {
@@ -40,9 +39,11 @@ public class Mesh(Vertex[] vertices, uint[] indices, GL gl) : IDrawable
         // Position attribute
         _gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), null);
         _gl.EnableVertexAttribArray(0);
+        
         // Normal attribute
         _gl.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), (void*) (3 * sizeof(float)));
         _gl.EnableVertexAttribArray(1);
+        
         // Texture attribute
         _gl.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), (void*) (6 * sizeof(float)));
         _gl.EnableVertexAttribArray(2);
@@ -52,6 +53,11 @@ public class Mesh(Vertex[] vertices, uint[] indices, GL gl) : IDrawable
     {
         gl.BindVertexArray(_vao);
         shader.Use();
+        
+        _gl.Uniform1(_gl.GetUniformLocation(shader.ShaderProgId, "texture_diffuse0"), 0);
+        _gl.ActiveTexture(TextureUnit.Texture0);
+        _gl.BindTexture(TextureTarget.Texture2D, 1);
+        
         if (_hasIndices)
         {
             gl.DrawElements(GLEnum.Triangles, (uint) indices.Length, DrawElementsType.UnsignedInt, null);

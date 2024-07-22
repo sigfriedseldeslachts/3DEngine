@@ -1,6 +1,5 @@
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
-using Shader = CustomEngine.Rendering.Shaders.Shader;
 
 namespace CustomEngine.Rendering.Shaders;
 

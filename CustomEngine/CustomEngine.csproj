@@ -12,6 +12,7 @@
       <PackageReference Include="SharpGLTF.Core" Version="1.0.1" />
       <PackageReference Include="SharpGLTF.Runtime" Version="1.0.1" />
       <PackageReference Include="Silk.NET" Version="2.21.0" />
+      <PackageReference Include="StbImageSharp" Version="2.27.14" />
     </ItemGroup>
 
     <ItemGroup>
